@@ -20,7 +20,7 @@ public class Spawner : MonoBehaviour
     private void Start()
     {
         _enemyPool.SetBaseObj(_prefab, _root);
-        _enemyPool.SetCapacity(100);
+        _enemyPool.SetCapacity(1000);
         GameManager.Instance.SetList();
     }
 

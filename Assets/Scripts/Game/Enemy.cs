@@ -17,6 +17,8 @@ public class Enemy : MonoBehaviour, IObjectPool
 
     void Update()
     {
+        if (!IsActive) return;
+
         Vector3 sub = GameManager.Player.RectTransform.position - RectTransform.position;
         sub.Normalize();
 
