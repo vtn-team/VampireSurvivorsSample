@@ -5,24 +5,21 @@ using UnityEngine;
 public class Enemy : MonoBehaviour, IObjectPool
 {
     [SerializeField] float _speed = 10;
-    RectTransform _rectTransform;
-    UnityEngine.UI.Image _image;
-    public RectTransform RectTransform => _rectTransform;
+    SpriteRenderer _image;
 
     void Awake()
     {
-        _rectTransform = GetComponent<RectTransform>();
-        _image = GetComponent<UnityEngine.UI.Image>();
+        _image = GetComponent<SpriteRenderer>();
     }
 
     void Update()
     {
         if (!IsActive) return;
 
-        Vector3 sub = GameManager.Player.RectTransform.position - RectTransform.position;
+        Vector3 sub = GameManager.Player.transform.position - transform.position;
         sub.Normalize();
 
-        _rectTransform.position += sub * _speed * Time.deltaTime;
+        transform.position += sub * _speed * Time.deltaTime;
     }
 
     public void Damage()

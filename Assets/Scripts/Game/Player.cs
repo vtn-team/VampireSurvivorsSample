@@ -11,8 +11,6 @@ public class Player : MonoBehaviour
     [SerializeField] float _shootTime = 0.3f;
     [SerializeField] Bullet _prefab = null;
     [SerializeField] Transform _root = null;
-    RectTransform _rectTransform;
-    public RectTransform RectTransform => _rectTransform;
 
     float _timer = 0.0f;
 
@@ -20,7 +18,6 @@ public class Player : MonoBehaviour
 
     void Awake()
     {
-        _rectTransform = GetComponent<RectTransform>();
         GameManager.Instance.SetPlayer(this);
     }
 
@@ -35,13 +32,13 @@ public class Player : MonoBehaviour
         float w = Input.GetAxis("Horizontal");
         float h = Input.GetAxis("Vertical");
 
-        _rectTransform.position += new Vector3(w * _speed * Time.deltaTime, h * _speed * Time.deltaTime, 0);
+        transform.position += new Vector3(w * _speed * Time.deltaTime, h * _speed * Time.deltaTime, 0);
 
         _timer += Time.deltaTime;
         if (_timer > _shootTime)
         {
             var script = _bulletPool.Instantiate();
-            script.RectTransform.position = this.RectTransform.position;
+            script.transform.position = this.transform.position;
             script.Shoot();
             _timer -= _shootTime;
         }

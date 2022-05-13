@@ -6,18 +6,15 @@ using UnityEngine;
 public class Bullet : MonoBehaviour, IObjectPool
 {
     [SerializeField] float _speed = 255;
-    RectTransform _rectTransform;
-    UnityEngine.UI.Image _image;
+    SpriteRenderer _image;
     Enemy _target;
     Vector3 _shootVec;
-    public RectTransform RectTransform => _rectTransform;
 
     float _timer = 0.0f;
 
     void Awake()
     {
-        _rectTransform = GetComponent<RectTransform>();
-        _image = GetComponent<UnityEngine.UI.Image>();
+        _image = GetComponent<SpriteRenderer>();
     }
 
     public void Shoot()
@@ -29,7 +26,7 @@ public class Bullet : MonoBehaviour, IObjectPool
         foreach(var e in list)
         {
             if (!e.IsActive) continue;
-            vec = e.RectTransform.position - GameManager.Player.RectTransform.position;
+            vec = e.transform.position - GameManager.Player.transform.position;
             if(len == -1 || vec.magnitude < len)
             {
                 _target = e;
@@ -37,13 +34,14 @@ public class Bullet : MonoBehaviour, IObjectPool
             }
         }
 
-        _shootVec = _target.RectTransform.position - GameManager.Player.RectTransform.position;
+        if (_target == null) return;
+        _shootVec = _target.transform.position - GameManager.Player.transform.position;
         _shootVec.Normalize();
     }
 
     void Update()
     {
-        _rectTransform.position += _shootVec * _speed * Time.deltaTime;
+        transform.position += _shootVec * _speed * Time.deltaTime;
 
         var list = GameManager.EnemyList;
         _target = null;
@@ -52,8 +50,8 @@ public class Bullet : MonoBehaviour, IObjectPool
         {
             if (!e.IsActive) continue;
 
-            vec = e.RectTransform.position - this.RectTransform.position;
-            if (vec.magnitude < 25.0f)
+            vec = e.transform.position - this.transform.position;
+            if (vec.magnitude < 1.0f)
             {
                 e.Damage();
                 Destroy();
