@@ -17,30 +17,19 @@ public class Bullet : MonoBehaviour, IObjectPool
         _image = GetComponent<SpriteRenderer>();
     }
 
-    public void Shoot()
+    public void Shoot(Enemy target)
     {
-        var list = GameManager.EnemyList;
-        _target = null;
-        float len = -1;
-        Vector3 vec;
-        foreach(var e in list)
-        {
-            if (!e.IsActive) continue;
-            vec = e.transform.position - GameManager.Player.transform.position;
-            if(len == -1 || vec.magnitude < len)
-            {
-                _target = e;
-                len = vec.magnitude;
-            }
-        }
-
+        _target = target;
         if (_target == null) return;
+
         _shootVec = _target.transform.position - GameManager.Player.transform.position;
         _shootVec.Normalize();
     }
 
     void Update()
     {
+        if (!_isActrive) return;
+
         transform.position += _shootVec * _speed * Time.deltaTime;
 
         var list = GameManager.EnemyList;
@@ -51,7 +40,7 @@ public class Bullet : MonoBehaviour, IObjectPool
             if (!e.IsActive) continue;
 
             vec = e.transform.position - this.transform.position;
-            if (vec.magnitude < 1.0f)
+            if (vec.magnitude < 1.5f)
             {
                 e.Damage();
                 Destroy();

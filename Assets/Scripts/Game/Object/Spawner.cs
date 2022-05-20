@@ -21,9 +21,10 @@ public class Spawner : MonoBehaviour
     {
         _enemyPool.SetBaseObj(_prefab, _root);
         _enemyPool.SetCapacity(1000);
-        GameManager.Instance.SetList();
 
-        for (int i = 0; i < 900; ++i) Spawn();
+        GameManager.Instance.Setup();
+
+        //for (int i = 0; i < 900; ++i) Spawn();
     }
 
     private void Update()

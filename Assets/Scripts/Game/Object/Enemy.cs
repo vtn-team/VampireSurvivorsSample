@@ -24,8 +24,10 @@ public class Enemy : MonoBehaviour, IObjectPool
 
     public void Damage()
     {
-        //TODO
         Destroy();
+
+        //TODO
+        GameManager.Instance.GetExperience(1);
     }
 
     //ObjectPool
